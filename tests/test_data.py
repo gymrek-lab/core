@@ -4,19 +4,15 @@ from dataclasses import dataclass, field
 
 import pytest
 import numpy as np
-from core.data import (
-    Extra,
-    Repeat,
-    Variant,
-    HapBlock,
-    Haplotype,
+
+from core.phenotypes import Phenotypes
+from core.covariates import Covariates
+from core.breakpoints import Breakpoints, HapBlock
+from core.haplotypes import Extra, Repeat, Variant, Haplotype, Haplotypes
+from core.genotypes import (
     Genotypes,
-    Phenotypes,
-    Covariates,
-    Haplotypes,
-    Breakpoints,
-    GenotypesTR,
     GenotypesVCF,
+    GenotypesTR,
     GenotypesPLINK,
     GenotypesPLINKTR,
 )
