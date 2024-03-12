@@ -332,7 +332,7 @@ class Breakpoints(Data):
         --------
         To write to a file, you must first initialize a Breakpoints object and then
         fill out the names, data, and samples properties:
-        >>> from haptools.data import Breakpoints, HapBlock
+        >>> from core.data import Breakpoints, HapBlock
         >>> breakpoints = Breakpoints('simple.bp')
         >>> breakpoints.data = {
         >>>     'HG00096': [

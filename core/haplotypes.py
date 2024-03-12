@@ -751,7 +751,7 @@ class Haplotypes(Data):
     the extra fields and then specify the names of the classes when you initialize the
     Haplotypes object:
 
-    >>> haplotypes = Haplotypes('tests/data/simphenotype.hap', HaptoolsHaplotype)
+    >>> haplotypes = Haplotypes('tests/data/simphenotype.hap', CoreHaplotype)
     >>> haplotypes.read()
     >>> haps = haplotypes.data # a dictionary of Haplotype objects
     """

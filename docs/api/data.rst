@@ -7,10 +7,10 @@ data
 Overview
 ~~~~~~~~
 
-The ``data`` module is a submodule of ``haptools`` that handles IO for common file types including genotypes, haplotypes, phenotypes, and model covariates.
+The ``data`` module is a submodule of ``core`` that handles IO for common file types including genotypes, haplotypes, phenotypes, and model covariates.
 
 .. note::
-	This page documents common use-cases. To implement more advanced patterns, take a look at our detailed :ref:`API docs <api-haptools-data>`.
+	This page documents common use-cases. To implement more advanced patterns, take a look at our detailed :ref:`API docs <api-core-data>`.
 
 Motivation
 ----------
@@ -29,14 +29,14 @@ The abstract class requires that all classes contain methods for...
 
 .. code-block:: python
 
-	from haptools import data
+	from core import data
 	data.Data
 
 All classes are initialized with the path to the file containing the data and, optionally, a `python Logger <https://docs.python.org/3/howto/logging.html>`_ instance. All messages are written to the Logger instance. You can create your own Logger instance as follows.
 
 .. code-block:: python
 
-	from haptools import logging
+	from core import logging
 	log = logging.getLogger(name="name", level="ERROR")
 
 genotypes.py
@@ -47,7 +47,7 @@ This module supports reading and writing files that follow `the VCF <https://gat
 
 Documentation
 -------------
-The :ref:`genotypes.py API docs <api-haptools-data-genotypes>` contain example usage of the :class:`Genotypes` class.
+The :ref:`genotypes.py API docs <api-core-data-genotypes>` contain example usage of the :class:`Genotypes` class.
 See the documentation for the :class:`GenotypesVCF` class for an example of extending the :class:`Genotypes` class so that it loads REF and ALT alleles as well.
 
 Classes
@@ -189,7 +189,7 @@ GenotypesPLINK
 ++++++++++++++
 The :class:`GenotypesPLINK` class offers experimental support for reading and writing PLINK2 PGEN, PVAR, and PSAM files. We are able to read genotypes from PLINK2 PGEN files in a fraction of the time of VCFs. Reading from VCFs is :math:`O(n*p)`, while reading from PGEN files is approximately :math:`O(1)`.
 
-.. figure:: https://github.com/CAST-genomics/haptools/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
+.. figure:: https://github.com/gymrek-lab/core/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
 
 	The time required to load various genotype file formats.
 
@@ -222,7 +222,7 @@ Unfortunately, reading from PGEN files can require a lot of memory, at least ini
 
 .. code-block:: python
 
-	from haptools import logging
+	from core import logging
 	log = logging.getLogger(name="debug_plink_mem", level="DEBUG")
 
 	genotypes = data.GenotypesPLINK('tests/data/simple.pgen', log=log)
@@ -267,7 +267,7 @@ Documentation
 -------------
 
 1. The **.hap** :ref:`format specification <formats-haplotypes>`
-2. The :ref:`haplotypes.py API docs <api-haptools-data-haplotypes>` contain example usage of the :class:`Haplotypes` class and examples of sub-classing the :class:`Haplotype`, :class:`Repeat`, and :class:`Variant` classes
+2. The :ref:`haplotypes.py API docs <api-core-data-haplotypes>` contain example usage of the :class:`Haplotypes` class and examples of sub-classing the :class:`Haplotype`, :class:`Repeat`, and :class:`Variant` classes
 
 Classes
 -------
@@ -364,7 +364,7 @@ To read "extra" fields from a **.hap** file, one need only *extend* (sub-class) 
 .. code-block:: python
 
     from dataclasses import dataclass, field
-    from haptools.data import Haplotype, Extra
+    from core.data import Haplotype, Extra
 
     @dataclass
     class CustomHaplotype(Haplotype):
@@ -395,7 +395,7 @@ To read "extra" fields from a **.hap** file, one need only *extend* (sub-class) 
 .. code-block:: python
 
     from dataclasses import dataclass, field
-    from haptools.data import Repeat, Extra
+    from core.data import Repeat, Extra
 
     @dataclass
     class CustomRepeat(Repeat):
@@ -426,7 +426,7 @@ To read "extra" fields from a **.hap** file, one need only *extend* (sub-class) 
 .. code-block:: python
 
     from dataclasses import dataclass, field
-    from haptools.data import Haplotype, Extra
+    from core.data import Haplotype, Extra
 
     @dataclass
     class CustomVariant(Variant):
@@ -453,7 +453,7 @@ Documentation
 -------------
 
 1. The **.pheno** `phenotype format specification <https://www.cog-genomics.org/plink/2.0/input#pheno>`_
-2. The :ref:`phenotypes.py API docs <api-haptools-data-phenotypes>` contain example usage of the :class:`Phenotypes` class
+2. The :ref:`phenotypes.py API docs <api-core-data-phenotypes>` contain example usage of the :class:`Phenotypes` class
 
 Classes
 -------
@@ -533,7 +533,7 @@ Documentation
 -------------
 
 1. The **.covar** `covariate format specification <https://www.cog-genomics.org/plink/2.0/input#covar>`_
-2. The :ref:`covariates.py API docs <api-haptools-data-covariates>` contain example usage of the :class:`Covariates` class
+2. The :ref:`covariates.py API docs <api-core-data-covariates>` contain example usage of the :class:`Covariates` class
 
 Classes
 -------
@@ -553,7 +553,7 @@ Documentation
 -------------
 
 1. The **.bp** :ref:`format specification <formats-breakpoints>`
-2. The :ref:`breakpoints.py API docs <api-haptools-data-breakpoints>` contain example usage of the :class:`Breakpoints` class
+2. The :ref:`breakpoints.py API docs <api-core-data-breakpoints>` contain example usage of the :class:`Breakpoints` class
 
 Classes
 -------
@@ -572,7 +572,7 @@ The dtype of each numpy array is stored as a variable called ``HapBlock``. It is
 
 .. code-block:: python
 
-	from haptools import data
+	from core import data
 	data.HapBlock # the dtype of each numpy array in the data property
 
 Reading a file

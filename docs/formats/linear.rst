@@ -29,7 +29,7 @@ Linear files (``.linear`` files) store summary statistics from a linear model. W
 Examples
 --------
 
-See `tests/data/test_snpstats.linear <https://github.com/cast-genomics/haptools/blob/main/tests/data/test_snpstats.linear>`_ for an example of a short ``.linear`` file:
+See `tests/data/test_snpstats.linear <https://github.com/gymrek-lab/core/blob/main/tests/data/test_snpstats.linear>`_ for an example of a short ``.linear`` file:
 
 .. include:: ../../tests/data/test_snpstats.linear
   :literal:

@@ -4,10 +4,7 @@ from dataclasses import dataclass, field
 
 import pytest
 import numpy as np
-import numpy.lib.recfunctions as rfn
-from haptools.sim_phenotype import Haplotype as HaptoolsHaplotype
-from haptools.sim_phenotype import Repeat as HaptoolsRepeat
-from haptools.data import (
+from core.data import (
     Extra,
     Repeat,
     Variant,
@@ -1094,6 +1091,38 @@ class TestCovariates:
         assert cvs_sub.samples == samples
         np.testing.assert_allclose(cvs_sub.data, expected_data)
         assert np.array_equal(cvs_sub.names, expected_names)
+
+
+@dataclass
+class HaptoolsHaplotype(Haplotype):
+    """
+    A haplotype with sufficient fields for simphenotype
+
+    Properties and functions are shared with the base Haplotype object, "Haplotype"
+    """
+
+    beta: float
+    _extras: tuple = field(
+        repr=False,
+        init=False,
+        default=(Extra("beta", ".2f", "Effect size in linear model"),),
+    )
+
+
+@dataclass
+class HaptoolsRepeat(Repeat):
+    """
+    A repeat with sufficient fields for simphenotype
+
+    Properties and functions are shared with the base Repeat object, "Repeat"
+    """
+
+    beta: float
+    _extras: tuple = field(
+        repr=False,
+        init=False,
+        default=(Extra("beta", ".2f", "Effect size in linear model"),),
+    )
 
 
 class TestHaplotypes:

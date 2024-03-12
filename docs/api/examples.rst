@@ -8,14 +8,14 @@ Converting a ``.blocks.det`` file into a ``.hap`` file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You can use the :ref:`data API <api-data>` to convert `a PLINK 1.9 .blocks.det file <https://www.cog-genomics.org/plink/1.9/formats#blocks>`_ into a ``.hap`` file.
 
-As an example, let's say we would like to convert `the following simple.blocks.det file <https://github.com/cast-genomics/haptools/blob/main/tests/data/simple.blocks.det>`_.
+As an example, let's say we would like to convert `the following simple.blocks.det file <https://github.com/gymrek-lab/core/blob/main/tests/data/simple.blocks.det>`_.
 
 .. include:: ../../tests/data/simple.blocks.det
   :literal:
 
 .. code-block:: python
 
-    from haptools import data
+    from core import data
 
     # load the genotypes file
     # you can use either a VCF or PGEN file
@@ -72,12 +72,12 @@ Then your ``.hap`` file might look something like this.
 .. include:: ../../tests/data/apoe.hap
   :literal:
 
-You can use the :ref:`data API <api-data>` and the :ref:`simphenotype API <api-haptools-sim_phenotype>` to create such a file.
+You can use the :ref:`data API <api-data>` and the :ref:`simphenotype API <api-core-sim_phenotype>` to create such a file.
 
 .. code-block:: python
 
-    from haptools import data
-    from haptools.sim_phenotype import Haplotype
+    from core import data
+    from core.sim_phenotype import Haplotype
 
     variants = {}
     # load variants from the snplist file

@@ -6,7 +6,7 @@ Haplotypes
 
 This document describes our custom file format specification for haplotypes: the ``.hap`` file.
 
-.. figure:: https://github.com/CAST-genomics/haptools/assets/23412689/c4177e92-e1a3-4ed0-8d8c-bd179ee9f0e3
+.. figure:: https://github.com/gymrek-lab/core/assets/23412689/c4177e92-e1a3-4ed0-8d8c-bd179ee9f0e3
   :figwidth: 600
   :align: center
   :alt: The .hap file format
@@ -194,12 +194,12 @@ Each variant line belongs to a particular haplotype. These lines contain the fol
 
 Examples
 ~~~~~~~~
-You can find an example of a ``.hap`` file without any extra fields in `tests/data/basic.hap <https://github.com/cast-genomics/haptools/blob/main/tests/data/basic.hap>`_:
+You can find an example of a ``.hap`` file without any extra fields in `tests/data/basic.hap <https://github.com/gymrek-lab/core/blob/main/tests/data/basic.hap>`_:
 
 .. include:: ../../tests/data/basic.hap
    :literal:
 
-You can find an example with extra fields added within `tests/data/simphenotype.hap <https://github.com/cast-genomics/haptools/blob/main/tests/data/simphenotype.hap>`_:
+You can find an example with extra fields added within `tests/data/simphenotype.hap <https://github.com/gymrek-lab/core/blob/main/tests/data/simphenotype.hap>`_:
 
 .. include:: ../../tests/data/simphenotype.hap
    :literal:
@@ -246,11 +246,11 @@ transform
 ---------
 If you would like to simulate an ancestry-based effect, you should run ``transform`` with an *ancestry* extra field declared in your ``.hap`` file.
 
-You can download an example header with an *ancestry* extra field from `tests/data/simphenotype.hap <https://github.com/cast-genomics/haptools/blob/main/tests/data/simphenotype.hap>`_
+You can download an example header with an *ancestry* extra field from `tests/data/simphenotype.hap <https://github.com/gymrek-lab/core/blob/main/tests/data/simphenotype.hap>`_
 
 .. code-block:: bash
 
-  curl https://raw.githubusercontent.com/cast-genomics/haptools/main/tests/data/simphenotype.hap 2>/dev/null | head -n4
+  curl https://raw.githubusercontent.com/gymrek-lab/core/main/tests/data/simphenotype.hap 2>/dev/null | head -n4
 
 ``H`` Haplotype
 +++++++++++++++
@@ -278,11 +278,11 @@ simphenotype
 ------------
 The *beta* extra field should be declared for your ``.hap`` file to be compatible with the ``simphenotype`` subcommand.
 
-You can download an example header with a *beta* extra field from `tests/data/simphenotype.hap <https://github.com/cast-genomics/haptools/blob/main/tests/data/simphenotype.hap>`_
+You can download an example header with a *beta* extra field from `tests/data/simphenotype.hap <https://github.com/gymrek-lab/core/blob/main/tests/data/simphenotype.hap>`_
 
 .. code-block:: bash
 
-  curl https://raw.githubusercontent.com/cast-genomics/haptools/main/tests/data/simphenotype.hap 2>/dev/null | head -n4
+  curl https://raw.githubusercontent.com/gymrek-lab/core/main/tests/data/simphenotype.hap 2>/dev/null | head -n4
 
 
 ..
@@ -331,15 +331,15 @@ Changelog
 ~~~~~~~~~
 v0.2.0
 ------
-Support for tandem repeats in the specification via a new 'R' line type. See `PR #209 <https://github.com/CAST-genomics/haptools/pull/209>`_.
+Support for tandem repeats in the specification via a new 'R' line type. See `PR #209 <https://github.com/gymrek-lab/core/pull/209>`_.
 
-Also, ``.hap`` files no longer need to be sorted by their first field in order to be indexed. See `PR #208 <https://github.com/CAST-genomics/haptools/pull/208>`_. We have updated the recommended ``sort`` command to reflect this. The new command wraps ``sort`` in a call to ``awk`` to ensure header lines are kept at the beginning of the file.
+Also, ``.hap`` files no longer need to be sorted by their first field in order to be indexed. See `PR #208 <https://github.com/gymrek-lab/core/pull/208>`_. We have updated the recommended ``sort`` command to reflect this. The new command wraps ``sort`` in a call to ``awk`` to ensure header lines are kept at the beginning of the file.
 
 All v0.1.0 ``.hap`` files can be automatically updated to v0.2.0 by simply bumping the listed version number.
 
 v0.1.0
 ------
-Updates to the header lines in the specification. See `PR #80 <https://github.com/cast-genomics/haptools/pull/80>`_.
+Updates to the header lines in the specification. See `PR #80 <https://github.com/gymrek-lab/core/pull/80>`_.
 
 We've created a new type of metadata line for specifying the "order" of the extra fields in each line.
 In the absence of this metadata line, the extra fields will be assumed to appear in the order of the extra-field declarations in the header. Unfortunately, sorting can change that. By specifying the order of the extra fields up-front, you can ensure that the file will be parsed the same regardless of whether it is sorted.
@@ -350,4 +350,4 @@ If your ``.hap`` file does not have any extra fields, you can safely bump the ve
 
 v0.0.1
 ------
-Initialized the spec! See `PR #43 <https://github.com/cast-genomics/haptools/pull/43>`_.
+Initialized the spec! See `PR #43 <https://github.com/gymrek-lab/core/pull/43>`_.

@@ -4,7 +4,7 @@
 Genotypes
 =========
 
-.. figure:: https://github.com/CAST-genomics/haptools/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
+.. figure:: https://github.com/gymrek-lab/core/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
 
 	The time required to load various genotype file formats.
 
@@ -13,7 +13,7 @@ VCF/BCF
 
 Genotype files must be specified as VCF or BCF files. They can be bgzip-compressed.
 
-To be loaded properly, VCFs must follow the VCF specification. VCFs with duplicate variant IDs do not follow the specification; the IDs must be unique. Please validate your VCF using a tool like `gatk ValidateVariants <https://gatk.broadinstitute.org/hc/en-us/articles/360037057272-ValidateVariants>`_ before using haptools.
+To be loaded properly, VCFs must follow the VCF specification. VCFs with duplicate variant IDs do not follow the specification; the IDs must be unique. Please validate your VCF using a tool like `gatk ValidateVariants <https://gatk.broadinstitute.org/hc/en-us/articles/360037057272-ValidateVariants>`_ before using core.
 
 .. _formats-genotypesplink:
 
