@@ -55,6 +55,7 @@ addopts = """
 omit = [
     ".nox/*",
     "noxfile.py",
+    "core/tr_harmonizer.py",
 ]
 
 [tool.coverage.report]
