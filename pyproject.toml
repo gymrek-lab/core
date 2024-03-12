@@ -1,0 +1,49 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "core"
+version = "0.0.0"
+description = "The Gymrek Lab's core python library"
+authors = ["Gymrek Lab"]
+license = "MIT"
+repository = "https://github.com/gymrek-lab/core"
+homepage = "https://github.com/gymrek-lab/core"
+documentation = "https://core.readthedocs.io"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+numpy = ">=1.20.0"
+click = ">=8.0.3"
+pysam = ">=0.19.0"
+cyvcf2 = ">=0.30.14"
+matplotlib = ">=3.5.1"
+Pgenlib = ">=0.90.1"
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = ">=4.3.2"
+sphinx-autodoc-typehints = ">=1.12.0"
+sphinx-rtd-theme = ">=1.0.0"
+numpydoc = ">=1.1.0"
+sphinx-click = ">=3.0.2"
+
+[tool.poetry.group.tests.dependencies]
+pytest = ">=7.4.3"
+black = ">=23.3.0"
+ipython = ">=7.34.0"
+coverage = {extras = ["toml"], version = ">=7.2.7"}
+filprofiler = ">=2023.3.1"
+
+[tool.poetry.scripts]
+core = 'core.__main__:main'
+
+[tool.black]
+line-length = 88
+preview = true
+
+[tool.pytest.ini_options]
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
