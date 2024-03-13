@@ -28,6 +28,7 @@ Please read our :doc:`contribution guidelines </project_info/contributing>` and 
    :maxdepth: 1
 
    project_info/installation
+   project_info/example_files
    project_info/contributing
 
 .. toctree::
