@@ -50,7 +50,7 @@ To create a pull request you need to do these steps:
     5. Create a new branch off of the :code:`main` branch with :code:`git checkout -b <descriptive_branch_name>`. Please follow `best practices <https://www.conventionalcommits.org/>`_ when naming your branch
     6. Setup our development environment by following the instructions in :ref:`dev-setup-instructions` below
     7. Make your changes to the code
-    8. Add additional tests to the :code:`tests/` directory and add comments to the documentation to explain how to use your new code. We use pytest for testing and sphinx/numpydoc for documentation. If you add example code or an example command to the documentation, you should make sure to create an automated test that executes it, as well.
+    8. Add additional tests to the :code:`tests/` directory and add comments to the documentation to explain how to use your new code. We use pytest for testing and sphinx/numpydoc for documentation.
     9. Run the automated code-checking steps detailed in :ref:`code-check-instructions` below
     10. Commit your changes. Please use informative commit messages and do your best to ensure the commit history is clean and easy to interpret
     11. Now you can push your changes to your Github copy of core by running :code:`git push origin <descriptive_branch_name>`
@@ -100,82 +100,6 @@ You should specify a `version constraint <https://python-poetry.org/docs/master/
     .. code-block:: bash
 
         poetry add 'click>=8.0.4'
-
-
-------------------------------------------
-Modifying our command line interface (CLI)
-------------------------------------------
-We use the `click library <https://click.palletsprojects.com/>`_ to define ``core``'s command line interface as `nested commands <https://click.palletsprojects.com/quickstart/#nesting-commands>`_. All of the CLI logic is defined in `__main__.py <https://github.com/gymrek-lab/core/blob/main/core/__main__.py>`_.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Add or modify a command-line option
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-First, locate the definition of the command in `__main__.py <https://github.com/gymrek-lab/core/blob/main/core/__main__.py>`_
-
-You can add a ``@click.option`` or ``@click.argument`` line if you want to add a new option or argument. Please follow `click's convention <https://click.palletsprojects.com/parameters/#parameters>`_ and only use ``@click.argument`` for required arguments and ``@click.option`` for optional ones. See `the click documentation <https://click.palletsprojects.com/#documentation>`_ for directions on modifying or adding parameters like options/arguments.
-
-Please note that any modifications to our CLI represent a BREAKING change to core. To note this, please add an exclamation point ``!`` to your pull request prefix as described in the `conventional commits spec <https://www.conventionalcommits.org/>`_.
-
-~~~~~~~~~~~~~~~~~
-Add a new command
-~~~~~~~~~~~~~~~~~
-To add a new command, you only have to define a new function in `__main__.py <https://github.com/gymrek-lab/core/blob/main/core/__main__.py>`_. Within that function, you can import and call the rest of your code. For example, to add a command called ``mycommand`` which takes a single required file called ``arg1``, you might do the following.
-
-.. code-block:: python
-
-    @main.command(short_help="A short description of my command")
-    @click.argument("arg1", type=click.Path(exists=True, path_type=Path))
-    @click.option(
-        "-o",
-        "--output",
-        type=click.Path(path_type=Path),
-        default=Path("/dev/stdout"),
-        show_default="stdout",
-        help="The output of my command",
-    )
-    @click.option(
-        "-v",
-        "--verbosity",
-        type=click.Choice(["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG", "NOTSET"]),
-        default="INFO",
-        show_default=True,
-        help="The level of verbosity desired",
-    )
-    def mycommand(
-        arg1: Path,
-        output: Path = None,
-        verbosity: str = "INFO",
-    ):
-        """
-        A longer description of mycommand
-        """
-
-        from .mycommand import run_things
-        from .logging import getLogger
-
-        log = getLogger(name="mycommand", level=verbosity)
-
-        run_things(arg1, output, log)
-
-Notice that we usually define a logging object here to use throughout our code. For more information about logging, see the :ref:`section about it below <contributing-style-errors>`. All ``core`` commands should use a default verbosity of ``INFO``.
-
-~~~~~~~~~~~~~~~~~~~~~
-Documentating our CLI
-~~~~~~~~~~~~~~~~~~~~~
-
-+++++++++++++++++++++++++++++++
-For command-line option changes
-+++++++++++++++++++++++++++++++
-
-Any new or modified command-line options will be automatically documented via **click**. The changes should appear in the *Detailed Usage* section of the documentation for the command that you changed.
-
-In addition to the auto-documented changes, you might want to consider adding a new example of the usage of your option to the *Examples* section of the documentation for the command that you changed. All examples in our documentation should also be executed within a file in our `tests/ directory <https://github.com/gymrek-lab/core/tree/main/tests>`_.
-
-++++++++++++++++
-For new commands
-++++++++++++++++
-
-After you add a new command, you should make sure to create tests for it in the `tests/ directory <https://github.com/gymrek-lab/core/tree/main/tests>`_. You should also create a new page in the *Commands* section of our documentation with sections for a short description, an abbreviated usage, example commands, and a detailed usage (which is auto-generated). You can refer to :ref:`the index command <commands-index>` as an example. To ensure your new documentation page appears in our table of contents, add the name of the page to the list at the bottom of our `index.rst file <https://github.com/gymrek-lab/core/blob/main/docs/index.rst>`_.
 
 -----------------------------
 Modifying the ``.hap`` format
@@ -250,23 +174,19 @@ Code
 ~~~~~~
 Errors
 ~~~~~~
-We use the `Python logging module <https://coralogix.com/blog/python-logging-best-practices-tips/>`_ for all messages, including warnings, debugging info, and otherwise. For example, all classes in the ``data`` module have a ``log`` property that stores a logger object. If you are creating a new command, you can use our custom logging module to retrieve a suitable object.
+We use the `Python logging module <https://coralogix.com/blog/python-logging-best-practices-tips/>`_ for all messages, including warnings, debugging info, and otherwise. For example, all classes have a ``log`` property that stores a logger object.
 
 .. code-block:: python
 
-    from .logging import getLogger
+    from logging import getLogger
 
-    # the level of verbosity desired by the user
-    # can be: CRITICAL, ERROR, WARNING, INFO, DEBUG, or NOTSET
-    verbosity = "DEBUG"
-
-    # create a new logger object for the transform command
-    log = getLogger(name="transform", level=verbosity)
+    # create a new logger object if one hasn't been provided by the user
+    log = getLogger(self.__class__.__name__)
 
     # log a warning message to the logger
     log.warning("This is a warning")
 
-This way, the user can choose their level of verbosity among *CRITICAL*, *ERROR*, *WARNING*, *INFO*, *DEBUG*, and *NOTSET*. However, for critical errors (especially for those in the ``data`` module), our convention is to raise exceptions, usually with a custom ``ValueError``.
+This way, the user can choose their level of verbosity among *CRITICAL*, *ERROR*, *WARNING*, *INFO*, *DEBUG*, and *NOTSET*. However, for critical errors, our convention is to raise exceptions, usually with a custom ``ValueError``.
 
 ~~~~~~~~~~~~~~~~~~~
 Git commit messages

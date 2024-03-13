@@ -11,7 +11,7 @@ A highlight of the core library is the :doc:`.hap file </formats/haplotypes>`, o
 Logging
 ~~~~~~~
 
-All commands output log messages to standard error. The universal ``--verbosity`` flag controls the level of detail in our logging messages. By default, this is set to ``INFO``, which will yield errors, warnings, and info messages. To get more detailed messages, set it to ``DEBUG``. To get only error messages, set it to ``ERROR``. To get errors *and* warnings, set it to ``WARNING``. Refer to `the Python documentation on logging levels <https://docs.python.org/3/library/logging.html#levels>`_ for more information.
+All classes output log messages to standard error via python's logging module.
 
 Contributing
 ~~~~~~~~~~~~
