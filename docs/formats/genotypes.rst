@@ -4,7 +4,7 @@
 Genotypes
 =========
 
-.. figure:: https://github.com/gymrek-lab/core/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
+.. figure:: https://github.com/CAST-genomics/haptools/assets/23412689/6da88941-7520-4c19-beaa-27f540f6b047
 
 	The time required to load various genotype file formats.
 
