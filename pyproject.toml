@@ -31,6 +31,7 @@ sphinx-click = ">=3.0.2"
 
 [tool.poetry.group.tests.dependencies]
 pytest = ">=7.4.3"
+pytest-cov = ">=3.0.0"
 black = ">=23.3.0"
 ipython = ">=7.34.0"
 coverage = {extras = ["toml"], version = ">=7.2.7"}
@@ -47,3 +48,19 @@ preview = true
 log_cli_level = "DEBUG"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+addopts = """
+--ignore noxfile.py
+"""
+
+[tool.coverage.run]
+omit = [
+    ".nox/*",
+    "noxfile.py",
+    "core/__init__.py",
+    "core/tr_harmonizer.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+]
