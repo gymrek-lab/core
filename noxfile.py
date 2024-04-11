@@ -25,7 +25,6 @@ cov_cli_args = [
 ]
 
 
-
 @session(python=locked_python_version)
 def docs(session: Session) -> None:
     """Build the documentation."""
@@ -78,9 +77,7 @@ if os.getenv("CONDA_EXE"):
             channel="conda-forge",
         )
         install_handle_python(session)
-        session.run(
-           "python", "-m", "pytest", *cov_cli_args, *session.posargs
-        )
+        session.run("python", "-m", "pytest", *cov_cli_args, *session.posargs)
 
 else:
 
@@ -89,6 +86,4 @@ else:
         """Run the test suite."""
         session.install("pytest", "pytest-cov")
         install_handle_python_numpy(session)
-        session.run(
-            "python", "-m", "pytest", *cov_cli_args, *session.posargs
-        )
+        session.run("python", "-m", "pytest", *cov_cli_args, *session.posargs)
