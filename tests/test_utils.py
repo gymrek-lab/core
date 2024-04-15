@@ -2,7 +2,7 @@ import os, sys
 import numpy as np
 import pytest
 
-import trtools.utils.utils as utils
+import core.utils as utils
 
 # LoadSingleReader
 def test_LoadSingleReader(monkeypatch, vcfdir):

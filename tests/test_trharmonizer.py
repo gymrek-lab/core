@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 from pytest import approx
 
-import trtools.utils.tr_harmonizer as trh
+import core.tr_harmonizer as trh
 
 # pylint: disable=C0116,C0103
 

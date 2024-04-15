@@ -3,8 +3,8 @@ import os, sys
 import numpy as np
 import pytest
 
-import trtools.utils.mergeutils as mergeutils
-import trtools.utils.tr_harmonizer as trh
+import core.mergeutils as mergeutils
+import core.tr_harmonizer as trh
 
 
 @pytest.fixture

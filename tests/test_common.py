@@ -1,7 +1,7 @@
 import os, sys
 import pytest
 
-import trtools.utils.common as common
+import core.common as common
 
 def test_MSG():
     common.MSG("Writing a test message", debug=False)
