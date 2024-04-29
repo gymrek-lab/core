@@ -49,7 +49,7 @@ import core.utils as utils
 #     assert np.isnan(utils.GetEntropy(afreqs))
 
 # GetMean
-# def test_GetMean(): 
+# def test_GetMean():
 #     afreqs = {0:1}
 #     assert(utils.GetMean(afreqs)==0)
 #     afreqs = {0:0.5, 1:0.5}
@@ -70,8 +70,8 @@ import core.utils as utils
 #     afreqs = {}
 #     assert(np.isnan(utils.GetMode(afreqs)))
 
-# # GetVariance 
-# def test_GetVariance(): 
+# # GetVariance
+# def test_GetVariance():
 #     afreqs = {0:1}
 #     assert(utils.GetVariance(afreqs)==0)
 #     afreqs = {0:0.5, 1:0.5}
@@ -117,16 +117,18 @@ import core.utils as utils
 #     assert(utils.GetCanonicalMotif("")=="")
 #     assert(utils.GetCanonicalMotif("cag")=="AGC")
 
+
 # GetCanonicalOneStrand
 def test_GetCanonicalOneStrand():
-    assert(utils.GetCanonicalOneStrand("AGC")=="AGC")
-    assert(utils.GetCanonicalOneStrand("CAG")=="AGC")
-    assert(utils.GetCanonicalOneStrand("TG")=="GT")
-    assert(utils.GetCanonicalOneStrand("AT")=="AT")
-    assert(utils.GetCanonicalOneStrand("T")=="T")
-    assert(utils.GetCanonicalOneStrand("TTGTT")=="GTTTT")
-    assert(utils.GetCanonicalOneStrand("")=="")
-    assert(utils.GetCanonicalOneStrand("at")=="AT")
+    assert utils.GetCanonicalOneStrand("AGC") == "AGC"
+    assert utils.GetCanonicalOneStrand("CAG") == "AGC"
+    assert utils.GetCanonicalOneStrand("TG") == "GT"
+    assert utils.GetCanonicalOneStrand("AT") == "AT"
+    assert utils.GetCanonicalOneStrand("T") == "T"
+    assert utils.GetCanonicalOneStrand("TTGTT") == "GTTTT"
+    assert utils.GetCanonicalOneStrand("") == ""
+    assert utils.GetCanonicalOneStrand("at") == "AT"
+
 
 # ReverseComplement
 # def test_ReverseComplement():
@@ -135,12 +137,14 @@ def test_GetCanonicalOneStrand():
 #     assert(utils.ReverseComplement("CGNT")=="ANCG")
 #     assert(utils.ReverseComplement("ccga")=="TCGG")
 
+
 # InferRepeatSequence
 def test_InferRepeatSequence():
-    assert(utils.InferRepeatSequence("ATATATATATA", 2)=="AT")
-    assert(utils.InferRepeatSequence("ATATATACATA", 2)=="AT")
-    assert(utils.InferRepeatSequence("ATATATACATAAAAAAAAAAAAAAA", 1)=="A")
-    assert(utils.InferRepeatSequence("ATATAT", 10)=="NNNNNNNNNN")
+    assert utils.InferRepeatSequence("ATATATATATA", 2) == "AT"
+    assert utils.InferRepeatSequence("ATATATACATA", 2) == "AT"
+    assert utils.InferRepeatSequence("ATATATACATAAAAAAAAAAAAAAA", 1) == "A"
+    assert utils.InferRepeatSequence("ATATAT", 10) == "NNNNNNNNNN"
+
 
 # LongestPerfectRepeat
 # def test_LongestPerfectRepeat():

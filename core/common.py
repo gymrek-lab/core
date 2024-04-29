@@ -4,6 +4,7 @@ Common util functions
 
 import sys
 
+
 def WARNING(msg):
     r"""Write a warning message to standard error
 
@@ -16,7 +17,8 @@ def WARNING(msg):
     --------
     >>> WARNING("Something unexpected happened")
     """
-    sys.stderr.write(msg.strip()+"\n")
+    sys.stderr.write(msg.strip() + "\n")
+
 
 def MSG(msg, debug=False):
     r"""Write a status message to standard error
@@ -33,4 +35,4 @@ def MSG(msg, debug=False):
     >>> MSG("Something unexpected happened")
     """
     if debug:
-        sys.stderr.write(msg.strip()+"\n")
+        sys.stderr.write(msg.strip() + "\n")

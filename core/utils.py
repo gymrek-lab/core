@@ -10,11 +10,12 @@ from typing import Any, Dict, List, Optional
 
 import cyvcf2
 import numpy as np
+
 # import scipy.stats
 
-from . import common # pragma: no cover
+from . import common  # pragma: no cover
 
-nucToNumber={"A":0,"C":1,"G":2,"T":3}
+nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 
 # def LoadSingleReader(
 #         vcf_loc: str,
@@ -376,6 +377,7 @@ nucToNumber={"A":0,"C":1,"G":2,"T":3}
 #             return repseq_r
 #     return repseq_f
 
+
 def GetCanonicalOneStrand(repseq):
     r"""Get canonical STR sequence, considering one strand
 
@@ -401,13 +403,14 @@ def GetCanonicalOneStrand(repseq):
     size = len(repseq)
     canonical = repseq
     for i in range(size):
-        newseq = repseq[size-i:]+repseq[0:size-i]
+        newseq = repseq[size - i :] + repseq[0 : size - i]
         for j in range(size):
             if nucToNumber[newseq[j]] < nucToNumber[canonical[j]]:
                 canonical = newseq
             elif nucToNumber[newseq[j]] > nucToNumber[canonical[j]]:
                 break
     return canonical
+
 
 # def ReverseComplement(seq):
 #     r"""Get reverse complement of a sequence.
@@ -445,6 +448,7 @@ def GetCanonicalOneStrand(repseq):
 #         else: newseq += "N"
 #     return newseq
 
+
 def InferRepeatSequence(seq, period):
     """
     TODO change to dynamic programming approach
@@ -470,29 +474,30 @@ def InferRepeatSequence(seq, period):
     'AT'
     """
     if period > len(seq):
-        return "N"*period
+        return "N" * period
     best_kmer = None
     best_copies = 0
     for offset in range(0, period):
         kmers = {}
         start_idx = 0
         while start_idx + period <= len(seq):
-            kmer = seq[start_idx:(start_idx + period)]
+            kmer = seq[start_idx : (start_idx + period)]
             if kmer not in kmers:
                 kmers[kmer] = 1
             else:
                 kmers[kmer] += 1
             start_idx += period
-            current_best_kmer = max(kmers, key = lambda k: kmers[k])
+            current_best_kmer = max(kmers, key=lambda k: kmers[k])
             current_best_copies = kmers[current_best_kmer]
             if current_best_copies > best_copies:
                 best_kmer = current_best_kmer
                 best_copies = current_best_copies
     return GetCanonicalOneStrand(best_kmer)
 
+
 # def LongestPerfectRepeat(seq, motif, check_reverse=True):
 #     r"""
-#     Determine the length (bp) of the longest 
+#     Determine the length (bp) of the longest
 #     perfect repeat stretch
 
 #     Credit: function originally written by
@@ -522,7 +527,7 @@ def InferRepeatSequence(seq, period):
 #         for mot in [motif, motif[::-1]]:
 #                 i = 0
 #                 match = 0
-#                 max_match = 0  
+#                 max_match = 0
 #                 while True:
 #                     if i >= len(ref_):
 #                         break
@@ -545,6 +550,7 @@ def InferRepeatSequence(seq, period):
 #                         j = 0
 #                 max_matches.append(max_match)
 #     return max(max_matches)
+
 
 def FabricateAllele(motif, length):
     """
@@ -607,5 +613,3 @@ def FabricateAllele(motif, length):
 #                 if action.option_strings or action.nargs in defaulting_nargs:
 #                     help += ' (default: %(default)s)'
 #         return help
-
-

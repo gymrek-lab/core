@@ -23,7 +23,9 @@ class DummyRecord:
 
 
 class DummyHarmonizedRecord:
-    def __init__(self, chrom, pos, reflen=None, motif=None, record_id=None, end_pos=None):
+    def __init__(
+        self, chrom, pos, reflen=None, motif=None, record_id=None, end_pos=None
+    ):
         self.chrom = chrom
         self.pos = pos
         self.end_pos = end_pos
@@ -34,8 +36,8 @@ class DummyHarmonizedRecord:
 
 def test_DebugPrintRecordLocations(capsys):
     dummy_records = []
-    dummy_records.append(DummyRecord('chr1', 100, 'CAGCAG', info={'END': 120}))
-    dummy_records.append(DummyRecord('chr1', 150, 'CTTCTT', info={'END': 170}))
+    dummy_records.append(DummyRecord("chr1", 100, "CAGCAG", info={"END": 120}))
+    dummy_records.append(DummyRecord("chr1", 150, "CTTCTT", info={"END": 170}))
 
     mergeutils.DebugPrintRecordLocations(dummy_records, [True, False])
     captured = capsys.readouterr()
@@ -58,7 +60,9 @@ def test_CheckVCFType(vcfdir):
     hipstr_vcf = cyvcf2.VCF(hipstr_path)
     snps_vcf = cyvcf2.VCF(snps_path)
     # TODO add tests to infer vcf type
-    assert trh.VcfTypes.gangstr == mergeutils.GetAndCheckVCFType([gangstr_vcf], "gangstr")
+    assert trh.VcfTypes.gangstr == mergeutils.GetAndCheckVCFType(
+        [gangstr_vcf], "gangstr"
+    )
 
     with pytest.raises(ValueError) as info:
         print(mergeutils.GetAndCheckVCFType([gangstr_vcf, hipstr_vcf], "auto"))
@@ -108,29 +112,44 @@ def test_GetRecordComparabilityAndIncrement():
     def comp_callback_false(x, y, z):
         return False
 
-
     pair = [DummyHarmonizedRecord("chr1", 20), DummyHarmonizedRecord("chr1", 20)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_true) == ([True, True], True)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_true
+    ) == ([True, True], True)
 
     # these two test cases show that second result of GetRecordComparabilityAndIncrement is
     # entirely dependant on the callback
     pair = [DummyHarmonizedRecord("chr1", 21), DummyHarmonizedRecord("chr1", 20)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_false) == ([False, True], False)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_false
+    ) == ([False, True], False)
 
     pair = [DummyHarmonizedRecord("chr1", 21), DummyHarmonizedRecord("chr1", 20)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_true) == ([False, True], True)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_true
+    ) == ([False, True], True)
 
     pair = [DummyHarmonizedRecord("chr2", 20), DummyHarmonizedRecord("chr1", 20)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_false) == ([False, True], False)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_false
+    ) == ([False, True], False)
 
     pair = [DummyHarmonizedRecord("chr1", 20), DummyHarmonizedRecord("chr1", 21)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_true) == ([True, False], True)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_true
+    ) == ([True, False], True)
 
     pair = [None, None]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_false) == ([False, False], False)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_false
+    ) == ([False, False], False)
 
     pair = [DummyHarmonizedRecord("chr1", 20), None]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_false) == ([True, False], False)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_false
+    ) == ([True, False], False)
 
     pair = [None, DummyHarmonizedRecord("chr1", 20)]
-    assert mergeutils.GetIncrementAndComparability(pair, chromosomes, comp_callback_false) == ([False, True], False)
+    assert mergeutils.GetIncrementAndComparability(
+        pair, chromosomes, comp_callback_false
+    ) == ([False, True], False)

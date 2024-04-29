@@ -16,10 +16,14 @@ from typing import List, Union, Any, Optional, Callable, Tuple
 
 CYVCF_RECORD = cyvcf2.Variant
 CYVCF_READER = cyvcf2.VCF
-COMPARABILITY_CALLBACK = Callable[[List[Optional[trh.TRRecord]], List[int], int], Union[bool, List[bool]]]
+COMPARABILITY_CALLBACK = Callable[
+    [List[Optional[trh.TRRecord]], List[int], int], Union[bool, List[bool]]
+]
 
 
-def LoadReaders(vcffiles: List[str], region: Optional[str] = None) -> List[CYVCF_READER]:
+def LoadReaders(
+    vcffiles: List[str], region: Optional[str] = None
+) -> List[CYVCF_READER]:
     r"""Return list of VCF readers
 
     Parameters
@@ -60,15 +64,19 @@ def GetSharedSamples(readers: List[CYVCF_READER]) -> List[str]:
     samples : list of str
         Samples present in all readers
     """
-    if len(readers) == 0: return list()
+    if len(readers) == 0:
+        return list()
     samples = set(readers[0].samples)
-    if len(readers) == 1: return list(samples)
+    if len(readers) == 1:
+        return list(samples)
     for r in readers[1:]:
         samples = samples.intersection(set(r.samples))
     return list(samples)
 
 
-def GetSamples(readers: List[CYVCF_READER], filenames: Optional[str] = None) -> List[str]:
+def GetSamples(
+    readers: List[CYVCF_READER], filenames: Optional[str] = None
+) -> List[str]:
     r"""Get list of samples used in all files being merged
 
     Parameters
@@ -125,9 +133,9 @@ def GetAndCheckVCFType(vcfs: List[CYVCF_READER], vcftype: str) -> str:
     TypeError
       If one of the VCFs does not look like it was produced by any supported TR
       caller, or if one of the VCFs looks like it could have been produced by
-	  more than one supported TR caller and vcftype == 'auto', or if, for one
+          more than one supported TR caller and vcftype == 'auto', or if, for one
       of the VCFs, vcftype doesn't match any of the callers that could have
-	  produced that VCF, or if the types of the VCFs don't match
+          produced that VCF, or if the types of the VCFs don't match
     """
     types = []
     for vcf in vcfs:
@@ -175,7 +183,8 @@ def GetChromOrderEqual(chrom_order: Union[int, float], min_chrom: int) -> bool:
     equal : bool
        Return True if chrom_order==min_chrom and chrom_order != np.inf
     """
-    if chrom_order == np.inf: return False
+    if chrom_order == np.inf:
+        return False
     return chrom_order == min_chrom
 
 
@@ -214,11 +223,14 @@ def CheckPos(record: CYVCF_RECORD, chrom: str, pos: int) -> bool:
     check : bool
        Return True if the current record is at this position
     """
-    if record is None: return False
+    if record is None:
+        return False
     return record.CHROM == chrom and record.POS == pos
 
 
-def GetMinRecords(record_list: List[Optional[trh.TRRecord]], chroms: List[str]) -> List[bool]:
+def GetMinRecords(
+    record_list: List[Optional[trh.TRRecord]], chroms: List[str]
+) -> List[bool]:
     r"""Check if each record is next up in sort order
 
     Return a vector of boolean set to true if
@@ -241,7 +253,9 @@ def GetMinRecords(record_list: List[Optional[trh.TRRecord]], chroms: List[str]) 
     chrom_order = [GetChromOrder(r, chroms) for r in record_list]
     pos = [GetPos(r) for r in record_list]
     min_chrom = min(chrom_order)
-    allpos = [pos[i] for i in range(len(pos)) if GetChromOrderEqual(chrom_order[i], min_chrom)]
+    allpos = [
+        pos[i] for i in range(len(pos)) if GetChromOrderEqual(chrom_order[i], min_chrom)
+    ]
     if len(allpos) > 0:
         min_pos = min(allpos)
     else:
@@ -249,15 +263,17 @@ def GetMinRecords(record_list: List[Optional[trh.TRRecord]], chroms: List[str]) 
     return [CheckPos(r, chroms[min_chrom], min_pos) for r in record_list]
 
 
-def default_callback(records: List[trh.TRRecord], chrom_order: List[int], min_chrom_index: int) -> bool:
+def default_callback(
+    records: List[trh.TRRecord], chrom_order: List[int], min_chrom_index: int
+) -> bool:
     return True
 
 
-def GetIncrementAndComparability(record_list: List[Optional[trh.TRRecord]],
-                                 chroms: List[str],
-                                 overlap_callback: COMPARABILITY_CALLBACK = default_callback) \
-        -> Tuple[List[bool], Union[bool, List[bool]]]:
-
+def GetIncrementAndComparability(
+    record_list: List[Optional[trh.TRRecord]],
+    chroms: List[str],
+    overlap_callback: COMPARABILITY_CALLBACK = default_callback,
+) -> Tuple[List[bool], Union[bool, List[bool]]]:
     r"""Get list that says which records should be skipped in the next
      iteration (increment), and whether they are all comparable / mergable
      The value of increment elements is determined by the (harmonized) position of corresponding records
@@ -285,11 +301,16 @@ def GetIncrementAndComparability(record_list: List[Optional[trh.TRRecord]],
     chrom_order = [np.inf if r is None else chroms.index(r.chrom) for r in record_list]
     pos = [np.inf if r is None else r.pos for r in record_list]
     min_chrom_index = min(chrom_order)
-    curr_pos=[pos[i] for i in range(len(chrom_order)) if chrom_order[i]==min_chrom_index]
+    curr_pos = [
+        pos[i] for i in range(len(chrom_order)) if chrom_order[i] == min_chrom_index
+    ]
     min_pos = min(curr_pos)
-    increment = \
-        [chrom_order[i] == min_chrom_index and pos[i] == min_pos and record_list[i] is not None
-         for i in range(len(chrom_order))]
+    increment = [
+        chrom_order[i] == min_chrom_index
+        and pos[i] == min_pos
+        and record_list[i] is not None
+        for i in range(len(chrom_order))
+    ]
     comparable = overlap_callback(record_list, chrom_order, min_chrom_index)
 
     return increment, comparable
@@ -312,7 +333,9 @@ def DoneReading(records: List[Union[CYVCF_RECORD, trh.TRRecord]]) -> bool:
     return all([item is None for item in records])
 
 
-def DebugPrintRecordLocations(current_records: List[CYVCF_RECORD], is_min: List[bool]) -> None:
+def DebugPrintRecordLocations(
+    current_records: List[CYVCF_RECORD], is_min: List[bool]
+) -> None:
     r"""Debug function to print current records for each file
 
     Parameters
@@ -348,8 +371,11 @@ def CheckMin(is_min: List[bool]) -> bool:
     return False
 
 
-def GetNextRecords(readers: List[CYVCF_READER], current_records: List[CYVCF_RECORD], increment: List[bool]) \
-        -> List[CYVCF_RECORD]:
+def GetNextRecords(
+    readers: List[CYVCF_READER],
+    current_records: List[CYVCF_RECORD],
+    increment: List[bool],
+) -> List[CYVCF_RECORD]:
     r"""Increment readers of each file
 
     Increment readers[i] if increment[i] set to true
@@ -384,16 +410,16 @@ def GetNextRecords(readers: List[CYVCF_READER], current_records: List[CYVCF_RECO
 def InitReaders(readers: List[CYVCF_READER]) -> List[CYVCF_RECORD]:
     r"""Increment readers of each file
 
-        Returns list of first records from list of readers.
+    Returns list of first records from list of readers.
 
-        Parameters
-        ----------
-        readers : list of cyvcf2.VCF
-           List of readers for all files being merged
+    Parameters
+    ----------
+    readers : list of cyvcf2.VCF
+       List of readers for all files being merged
 
-        Returns
-        -------
-        list of vcf.Record
-           List of next records for each file
-        """
+    Returns
+    -------
+    list of vcf.Record
+       List of next records for each file
+    """
     return [next(reader) for reader in readers]
