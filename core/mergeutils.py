@@ -9,8 +9,8 @@ import sys
 
 from cyvcf2 import cyvcf2
 
-import trtools.utils.common as common
-import trtools.utils.tr_harmonizer as trh
+from . import common
+from . import tr_harmonizer as trh
 
 from typing import List, Union, Any, Optional, Callable, Tuple
 

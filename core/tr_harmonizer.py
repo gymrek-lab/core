@@ -11,7 +11,7 @@ from typing import Any, Callable, Dict, Generator, Iterator, List, Optional, Set
 import cyvcf2
 import numpy as np
 
-import trtools.utils.utils as utils
+from . import utils
 
 
 # List of supported VCF types

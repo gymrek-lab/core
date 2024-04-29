@@ -12,7 +12,7 @@ import cyvcf2
 import numpy as np
 import scipy.stats
 
-import trtools.utils.common as common # pragma: no cover
+from . import common # pragma: no cover
 
 nucToNumber={"A":0,"C":1,"G":2,"T":3}
 
