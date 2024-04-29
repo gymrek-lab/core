@@ -89,7 +89,7 @@ jobs:
           nox --verbose --python=${{ matrix.python }} -- --cov=. --cov-report=term-missing --cov-fail-under=93
 
       - name: Run tests with nox
-        if: matrix.session == 'tests'
+        if: matrix.session == 'tests' || matrix.session == 'lint'
         shell: bash -el {0}
         run: |
           nox --verbose --python=${{ matrix.python }}
