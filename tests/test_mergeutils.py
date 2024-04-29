@@ -9,7 +9,7 @@ import core.tr_harmonizer as trh
 
 @pytest.fixture
 def mrgvcfdir(vcfdir):
-    return os.path.join(vcfdir, "mergeSTR_vcfs")
+    return os.path.join(vcfdir, "")
 
 
 # Set up dummy class
