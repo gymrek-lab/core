@@ -58,7 +58,6 @@ omit = [
     ".nox/*",
     "noxfile.py",
     "core/__init__.py",
-    "core/tr_harmonizer.py",
 ]
 
 [tool.coverage.report]
