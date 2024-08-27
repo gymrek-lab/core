@@ -1,3 +1,4 @@
+#type: ignore
 """
 Common util functions
 """

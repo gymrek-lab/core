@@ -1,3 +1,4 @@
+#type: ignore
 """
 Util functions for calculating summary STR statistics
 and performing basic string operations on STR alleles.

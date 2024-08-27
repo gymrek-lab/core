@@ -64,3 +64,7 @@ omit = [
 exclude_lines = [
     "pragma: no cover",
 ]
+
+[tool.pyright]
+strictParameterNoneValue = false
+ignore = ["**/tests/**"]
