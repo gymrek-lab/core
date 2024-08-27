@@ -1,4 +1,4 @@
-#type: ignore
+# type: ignore
 """Nox sessions."""
 import os
 import shutil

@@ -1,4 +1,4 @@
-#type: ignore
+# type: ignore
 """
 Utilities for harmonizing tandem repeat VCF records.
 

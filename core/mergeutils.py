@@ -1,4 +1,4 @@
-#type: ignore
+# type: ignore
 """
 Utilities for reading multiple VCFs simulataneously
 and keeping them in sync.
