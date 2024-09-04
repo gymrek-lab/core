@@ -12,7 +12,7 @@ from typing import Any, Dict, List, Optional, Set
 import cyvcf2
 import numpy as np
 
-from . import common
+# from . import common
 
 nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 
