@@ -3,14 +3,14 @@
 Util functions for calculating summary STR statistics
 and performing basic string operations on STR alleles.
 """
-import argparse
-import itertools
+# import argparse
+# import itertools
 import math
-import os
-from typing import Any, Dict, List, Optional, Set
+# import os
+# from typing import Any, Dict, List, Optional, Set
 
-import cyvcf2
-import numpy as np
+# import cyvcf2
+# import numpy as np
 
 # from . import common
 
