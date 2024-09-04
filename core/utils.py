@@ -7,20 +7,19 @@ import argparse
 import itertools
 import math
 import os
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import cyvcf2
 import numpy as np
 
-# import scipy.stats
-
-from . import common  # pragma: no cover
+from . import common
 
 nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 
+
 # def LoadSingleReader(
-#         vcf_loc: str,
-#         checkgz: bool = True) -> Optional[cyvcf2.VCF]:
+#     vcf_loc: str, checkgz: bool = True, lazy: bool = False, samples: Set[str] = None
+# ) -> Optional[cyvcf2.VCF]:
 #     """
 #     Return a VCF reader
 
@@ -31,6 +30,11 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     checkgz:
 #         Check whether VCF file is gzipped and indexed,
 #         if not return None
+#     lazy:
+#         if True, then don’t unpack (parse) the underlying record until needed.
+#         Default: False
+#     samples:
+#         List of samples to include. If None, load all samples
 
 #     Returns
 #     -------
@@ -40,24 +44,31 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     """
 #     # check that vcf_loc is a file or file descriptor (ex: '/dev/stdin')
 #     if not os.path.exists(vcf_loc) or os.path.isdir(vcf_loc):
-#         common.WARNING("Could not find VCF file %s"%vcf_loc)
+#         common.WARNING("Could not find VCF file %s" % vcf_loc)
 #         return None
 #     if checkgz:
 #         if not vcf_loc.endswith(".vcf.gz") and not vcf_loc.endswith(".vcf.bgz"):
-#             common.WARNING("Make sure %s is bgzipped and indexed"%vcf_loc)
+#             common.WARNING("Make sure %s is bgzipped and indexed" % vcf_loc)
 #             return None
-#         if not os.path.isfile(vcf_loc+".tbi"):
-#             common.WARNING("Could not find VCF index %s.tbi"%vcf_loc)
+#         if not os.path.isfile(vcf_loc + ".tbi"):
+#             common.WARNING("Could not find VCF index %s.tbi" % vcf_loc)
 #             return None
+#     if samples is not None:
+#         if not isinstance(samples, set):
+#             common.WARNING(
+#                 "Samples cannot be loaded in a particular order. Order will be ignored"
+#             )
+#         samples = list(samples)
 #     try:
-#         return cyvcf2.VCF(vcf_loc)
+#         return cyvcf2.VCF(vcf_loc, lazy=lazy, samples=samples)
 #     except OSError:
-#         common.WARNING("Could not open VCF file %s. Is it really VCF?"%vcf_loc)
+#         common.WARNING("Could not open VCF file %s. Is it really VCF?" % vcf_loc)
 #         return None
 
+
 # def LoadReaders(
-#         vcf_locs: List[str],
-#         checkgz: bool = True) -> Optional[List[cyvcf2.VCF]]:
+#     vcf_locs: List[str], checkgz: bool = True
+# ) -> Optional[List[cyvcf2.VCF]]:
 #     """
 #     Return a list of VCF readers
 
@@ -84,8 +95,9 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 
 #     return readers
 
+
 # def GetContigs(vcf: cyvcf2.VCF) -> List[str]:
-#     '''
+#     """
 #     Returns the contig IDs in the VCF.
 
 #     Parameters
@@ -97,12 +109,13 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     -------
 #     List[str] :
 #         A list of contig IDs
-#     '''
+#     """
 #     contigs = []
 #     for header_line in vcf.header_iter():
-#         if header_line['HeaderType'].lower() == 'contig':
-#             contigs.append(header_line['ID'])
+#         if header_line["HeaderType"].lower() == "contig":
+#             contigs.append(header_line["ID"])
 #     return contigs
+
 
 # def ValidateAlleleFreqs(allele_freqs):
 #     r"""Check that the allele frequency distribution is valid.
@@ -125,8 +138,10 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     >>> ValidateAlleleFreqs({0:0.5, 1:0.5})
 #     True
 #     """
-#     if len(allele_freqs.keys()) == 0: return False
-#     return abs(1-sum(allele_freqs.values())) <= 0.001
+#     if len(allele_freqs.keys()) == 0:
+#         return False
+#     return abs(1 - sum(allele_freqs.values())) <= 0.001
+
 
 # def GetHeterozygosity(allele_freqs):
 #     r"""Compute heterozygosity of a locus
@@ -161,7 +176,7 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     """
 #     if not ValidateAlleleFreqs(allele_freqs):
 #         return np.nan
-#     return 1-sum([freq**2 for freq in allele_freqs.values()])
+#     return 1 - sum([freq**2 for freq in allele_freqs.values()])
 
 
 # def GetEntropy(allele_freqs: Dict[Any, float]) -> float:
@@ -198,7 +213,7 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     """
 #     if not ValidateAlleleFreqs(allele_freqs):
 #         return np.nan
-#     return scipy.stats.entropy(list(x for x in allele_freqs.values()), base=2)
+#     return float(scipy.stats.entropy(list(x for x in allele_freqs.values()), base=2))
 
 
 # def GetMean(allele_freqs):
@@ -222,7 +237,8 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     """
 #     if not ValidateAlleleFreqs(allele_freqs):
 #         return np.nan
-#     return sum([key*allele_freqs[key] for key in allele_freqs])
+#     return sum([key * allele_freqs[key] for key in allele_freqs])
+
 
 # def GetMode(allele_freqs):
 #     """
@@ -259,6 +275,7 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #             modes.add(allele)
 #     return min(modes)  # use min to make this arbitrary selection reproducible
 
+
 # def GetVariance(allele_freqs):
 #     r"""Compute the variance of the allele lengths
 
@@ -282,7 +299,8 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     if not ValidateAlleleFreqs(allele_freqs):
 #         return np.nan
 #     mean = GetMean(allele_freqs)
-#     return sum([allele_freqs[key]*(key-mean)**2 for key in allele_freqs.keys()])
+#     return sum([allele_freqs[key] * (key - mean) ** 2 for key in allele_freqs.keys()])
+
 
 # def GetHardyWeinbergBinomialTest(allele_freqs, genotype_counts):
 #     r"""Compute Hardy Weinberg p-value
@@ -319,8 +337,14 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #             return np.nan
 #         if gt[1] not in allele_freqs.keys():
 #             return np.nan
-#         if gt[0] == gt[1]: num_hom += genotype_counts[gt]
-#     return scipy.stats.binom_test(num_hom, n=total_samples, p=exp_hom_frac)
+#         if gt[0] == gt[1]:
+#             num_hom += genotype_counts[gt]
+#     try:
+#         return scipy.stats.binom_test(num_hom, n=total_samples, p=exp_hom_frac)
+#     except AttributeError:
+#         # binom_test was deprecated in favor of binomtest in scipy 1.12.0
+#         return scipy.stats.binomtest(num_hom, n=total_samples, p=exp_hom_frac).pvalue
+
 
 # def GetHomopolymerRun(seq):
 #     r"""Compute the maximum homopolymer run length in a sequence
@@ -340,9 +364,11 @@ nucToNumber = {"A": 0, "C": 1, "G": 2, "T": 3}
 #     >>> GetHomopolymerRun("AATAAAATAAAAAT")
 #     5
 #     """
-#     if len(seq) == 0: return 0
+#     if len(seq) == 0:
+#         return 0
 #     seq = seq.upper()
-#     return max(len(list(y)) for (c,y) in itertools.groupby(seq))
+#     return max(len(list(y)) for (c, y) in itertools.groupby(seq))
+
 
 # def GetCanonicalMotif(repseq):
 #     r"""Get canonical STR sequence, considering both strands
@@ -437,7 +463,7 @@ def GetCanonicalOneStrand(repseq):
 #     newseq = ""
 #     size = len(seq)
 #     for i in range(len(seq)):
-#         char = seq[len(seq)-i-1]
+#         char = seq[len(seq) - i - 1]
 #         if char == "A":
 #             newseq += "T"
 #         elif char == "G":
@@ -446,7 +472,8 @@ def GetCanonicalOneStrand(repseq):
 #             newseq += "G"
 #         elif char == "T":
 #             newseq += "A"
-#         else: newseq += "N"
+#         else:
+#             newseq += "N"
 #     return newseq
 
 
@@ -526,30 +553,30 @@ def InferRepeatSequence(seq, period):
 #         checkseqs.append(strand_seq)
 #     for ref_ in checkseqs:
 #         for mot in [motif, motif[::-1]]:
-#                 i = 0
-#                 match = 0
-#                 max_match = 0
-#                 while True:
-#                     if i >= len(ref_):
-#                         break
-#                     for j in range(0,len(motif)):
-#                         k = i
-#                         while True:
-#                             while j < len(mot) and k < len(ref_) and ref_[k] == mot[j]:
-#                                 k += 1
-#                                 j += 1
-#                                 match += 1
-#                             max_match = max(max_match, match)
-#                             if j == len(motif):
-#                                 j = 0
-#                                 i = k
-#                             else:
-#                                 if j == len(motif) - 1:
-#                                     i += 1
-#                                 match = 0
-#                                 break
-#                         j = 0
-#                 max_matches.append(max_match)
+#             i = 0
+#             match = 0
+#             max_match = 0
+#             while True:
+#                 if i >= len(ref_):
+#                     break
+#                 for j in range(0, len(motif)):
+#                     k = i
+#                     while True:
+#                         while j < len(mot) and k < len(ref_) and ref_[k] == mot[j]:
+#                             k += 1
+#                             j += 1
+#                             match += 1
+#                         max_match = max(max_match, match)
+#                         if j == len(motif):
+#                             j = 0
+#                             i = k
+#                         else:
+#                             if j == len(motif) - 1:
+#                                 i += 1
+#                             match = 0
+#                             break
+#                     j = 0
+#             max_matches.append(max_match)
 #     return max(max_matches)
 
 
@@ -607,10 +634,9 @@ def FabricateAllele(motif, length):
 
 #     def _get_help_string(self, action):
 #         help = action.help
-#         if '%(default)' not in action.help:
-#             if (action.default is not argparse.SUPPRESS and
-#                     action.default is not None):
+#         if "%(default)" not in action.help:
+#             if action.default is not argparse.SUPPRESS and action.default is not None:
 #                 defaulting_nargs = [argparse.OPTIONAL, argparse.ZERO_OR_MORE]
 #                 if action.option_strings or action.nargs in defaulting_nargs:
-#                     help += ' (default: %(default)s)'
+#                     help += " (default: %(default)s)"
 #         return help
