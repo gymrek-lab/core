@@ -15,11 +15,6 @@ def test_getLogger(caplog):
     assert "Error message" in caplog.text
 
 
-def test_getLogger():
-    logger = getLogger()
-    assert isinstance(logger, logging.Logger)
-
-
 def test_getLogger_with_name():
     logger_name = "test_logger"
     logger = getLogger(name=logger_name)

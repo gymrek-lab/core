@@ -1,10 +1,10 @@
 import os
 import types
-from typing import List
+# from typing import List
 
 import cyvcf2
-import numpy as np
 import pytest
+import numpy as np
 from pytest import approx
 
 import core.tr_harmonizer as trh
