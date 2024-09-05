@@ -1,5 +1,6 @@
 import os
 import types
+
 # from typing import List
 
 import cyvcf2
