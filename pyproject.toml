@@ -20,7 +20,7 @@ click = ">=8.0.3"
 pysam = ">=0.19.0"
 cyvcf2 = ">=0.30.14"
 matplotlib = ">=3.5.1"
-Pgenlib = ">=0.90.1"
+pgenlib = ">=0.90.1"
 
 [tool.poetry.group.docs.dependencies]
 Sphinx = ">=4.3.2"
@@ -50,6 +50,7 @@ log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(linen
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 addopts = """
 --ignore noxfile.py
+-p tests.dataloader
 """
 
 [tool.coverage.run]
@@ -57,10 +58,13 @@ omit = [
     ".nox/*",
     "noxfile.py",
     "core/__init__.py",
-    "core/tr_harmonizer.py",
 ]
 
 [tool.coverage.report]
 exclude_lines = [
     "pragma: no cover",
 ]
+
+[tool.pyright]
+strictParameterNoneValue = false
+ignore = ["**/tests/**"]

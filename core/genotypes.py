@@ -13,12 +13,8 @@ import numpy.typing as npt
 from pysam import VariantFile
 from cyvcf2 import VCF, Variant
 
-try:
-    import trtools.utils.tr_harmonizer as trh
-except ModuleNotFoundError:
-    from . import tr_harmonizer as trh
-
 from .data import Data
+from . import tr_harmonizer as trh
 
 
 class Genotypes(Data):
